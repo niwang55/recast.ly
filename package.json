@@ -23,5 +23,8 @@
     "chai": "^3.5.0",
     "mocha": "2.3.3",
     "sinon": "1.17.3"
+  },
+  "scripts" :{
+    "start" : "babel . --watch --out-dir compiled --presets=es2015,react --ignore=node_modules,compiled --source-maps inline | live-server"
   }
 }
