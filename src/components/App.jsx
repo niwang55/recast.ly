@@ -5,53 +5,63 @@ class App extends React.Component {
 
     this.options = {
       key: window.YOUTUBE_API_KEY,
-      query: 'Pokemon Sun Moon',
-      max: 10
+      query: '',
+      max: 8
     };
 
-    // this.videoData = [];
+    this.onVideoListEntryClick = this.onVideoListEntryClick.bind(this);
+    this.onSearchType = this.onSearchType.bind(this);
 
     this.callback = (data) => { 
-      // console.log('App.js', this.videoData, data);
-      // for (var i = 0; i < data.length; i++) {
-      //   this.videoData.push(data[i]);
-      // }
       this.setState({
         allVids: data,
         currentVid: data[0]
       });
-      // console.log('App.js2', this.videoData, data);
+    };
+
+    this.searchCallback = (data) => { 
+      this.setState({
+        allVids: data,
+      });
     };
     
     this.state = {
-      allVids: emptyVideoData,
-      currentVid: emptyVideoData[0]
+      allVids: exampleVideoData,
+      currentVid: exampleVideoData[0]
     };
 
   }
 
   onVideoListEntryClick(video) {
+    console.log('click');
     this.setState({
       currentVid: video
     });
   }
 
+  onSearchType(event) {
+    this.props.searchYouTube({
+      key: window.YOUTUBE_API_KEY,
+      query: event.target.value,
+      max: 8
+    }, this.searchCallback.bind(this));
+  }
+
   render() {
     return (
       <div>
-        <Nav />
+        <Nav searchYouTube={this.props.searchYouTube} state={this.state} onSearchType={this.onSearchType}/>
         <div className="col-md-7">
-          <VideoPlayer video={this.state.currentVid} state={this.state}/>
+          <VideoPlayer video={this.state.currentVid}/>
         </div>
         <div className="col-md-5">
-          <VideoList videos={this.state.allVids} state={this.state} onVideoListEntryClick={this.onVideoListEntryClick.bind(this)}/>
+          <VideoList videos={this.state.allVids} state={this.state} onVideoListEntryClick={this.onVideoListEntryClick}/>
         </div>
       </div>
       );
   }
 
   componentDidMount() {
-    console.log('mount');
     this.props.searchYouTube(this.options, this.callback.bind(this));
   }
 }
