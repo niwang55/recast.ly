@@ -5,13 +5,14 @@ class App extends React.Component {
 
     this.options = {
       key: window.YOUTUBE_API_KEY,
-      query: 'react tutorial',
+      query: 'hello',
       max: 8
     };
 
     this.onVideoListEntryClick = this.onVideoListEntryClick.bind(this);
     this.onSearchType = this.onSearchType.bind(this);
     this.onToggle = this.onToggle.bind(this);
+    this.updateCurrentDetails = this.updateCurrentDetails.bind(this);
 
     this.callback = (data) => { 
       this.setState({
@@ -25,10 +26,17 @@ class App extends React.Component {
         allVids: data,
       });
     };
+
+    this.detailCB = (data) => {
+      this.setState({
+        currentDetails: data,
+      });
+    };
     
     this.state = {
       allVids: exampleVideoData,
       currentVid: exampleVideoData[0],
+      currentDetails: {},
       autoplay: 0
     };
 
@@ -41,10 +49,10 @@ class App extends React.Component {
   }
 
   onVideoListEntryClick(video) {
-    console.log('click');
     this.setState({
       currentVid: video
     });
+    this.updateCurrentDetails();
   }
 
   onSearchType(event) {
@@ -55,15 +63,20 @@ class App extends React.Component {
     }, this.searchCallback.bind(this));
   }
 
+  updateCurrentDetails() {
+    this.props.getVideoDetails(this.state.currentVid.id.videoId, this.detailCB.bind(this));
+    // return this.state.currentDetails.viewCount;
+  }
+
   render() {
     return (
       <div>
         <Nav searchYouTube={this.props.searchYouTube} state={this.state} onSearchType={this.onSearchType}/>
         <div className="col-md-7">
-          <VideoPlayer video={this.state.currentVid} state={this.state}/>
+          <VideoPlayer video={this.state.currentVid} state={this.state} updateCurrentDetails={this.updateCurrentDetails}/>
         </div>
         <div className="col-md-5">
-          <VideoList videos={this.state.allVids} state={this.state} onVideoListEntryClick={this.onVideoListEntryClick} onToggle={this.onToggle}/>
+          <VideoList videos={this.state.allVids} state={this.state} updateCurrentDetails={this.updateCurrentDetails} onVideoListEntryClick={this.onVideoListEntryClick} onToggle={this.onToggle}/>
         </div>
       </div>
       );
@@ -71,6 +84,7 @@ class App extends React.Component {
 
   componentDidMount() {
     this.props.searchYouTube(this.options, this.callback.bind(this));
+    // this.props.getVideoDetails(this.state.currentVid.id.videoId, this.detailCB.bind(this));
   }
 }
 

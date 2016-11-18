@@ -5,6 +5,8 @@ var VideoPlayer = (props) => (
     </div>
     <div className="video-player-details">
       <h3>{props.video.snippet.title}</h3>
+      <h5>{props.video.snippet.channelTitle}</h5>
+      <h6>{props.state.currentDetails.viewCount}</h6>
       <div>{props.video.snippet.description}</div>
     </div>
   </div>

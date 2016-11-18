@@ -2,7 +2,7 @@ var VideoList = (props) => (
   <div className="video-list media">
     <input type="checkbox" onChange={props.onToggle}> Autoplay</input>
     {props.videos.map(video =>
-      <VideoListEntry video={video} state={props.state} onVideoListEntryClick={props.onVideoListEntryClick}/>
+      <VideoListEntry video={video} state={props.state} updateCurrentDetails={props.updateCurrentDetails} onVideoListEntryClick={props.onVideoListEntryClick}/>
     )}
   </div>
 );

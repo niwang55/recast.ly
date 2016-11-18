@@ -1,1 +1,1 @@
-ReactDOM.render(<App searchYouTube={searchYouTube}/>, document.getElementById('app'));
+ReactDOM.render(<App searchYouTube={searchYouTube} getVideoDetails={getVideoDetails}/>, document.getElementById('app'));
