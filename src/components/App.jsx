@@ -5,12 +5,13 @@ class App extends React.Component {
 
     this.options = {
       key: window.YOUTUBE_API_KEY,
-      query: '',
+      query: 'react tutorial',
       max: 8
     };
 
     this.onVideoListEntryClick = this.onVideoListEntryClick.bind(this);
     this.onSearchType = this.onSearchType.bind(this);
+    this.onToggle = this.onToggle.bind(this);
 
     this.callback = (data) => { 
       this.setState({
@@ -27,9 +28,16 @@ class App extends React.Component {
     
     this.state = {
       allVids: exampleVideoData,
-      currentVid: exampleVideoData[0]
+      currentVid: exampleVideoData[0],
+      autoplay: 0
     };
 
+  }
+
+  onToggle() {
+    this.setState({
+      autoplay: !this.state.autoplay
+    });
   }
 
   onVideoListEntryClick(video) {
@@ -52,10 +60,10 @@ class App extends React.Component {
       <div>
         <Nav searchYouTube={this.props.searchYouTube} state={this.state} onSearchType={this.onSearchType}/>
         <div className="col-md-7">
-          <VideoPlayer video={this.state.currentVid}/>
+          <VideoPlayer video={this.state.currentVid} state={this.state}/>
         </div>
         <div className="col-md-5">
-          <VideoList videos={this.state.allVids} state={this.state} onVideoListEntryClick={this.onVideoListEntryClick}/>
+          <VideoList videos={this.state.allVids} state={this.state} onVideoListEntryClick={this.onVideoListEntryClick} onToggle={this.onToggle}/>
         </div>
       </div>
       );

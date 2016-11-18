@@ -12,6 +12,7 @@ body {
 .navbar img {
   height: 40px;
   width: 50px;
+  float: left;
 }
 
 .search-bar {
